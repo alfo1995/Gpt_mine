@@ -18,11 +18,15 @@ def chat():
             return jsonify({"error": "Il messaggio non può essere vuoto"}), 400
 
         # Invia la richiesta a OpenAI utilizzando il nuovo formato
-        response = openai.Completion.create(
-            model="text-davinci-003",  # Usa un modello come text-davinci-003
-            prompt=user_message,
-            max_tokens=150
-        )
+        response = openai.chat.Completion.create(
+                    model="gpt-3.5-turbo", 
+                    messages=[
+                        {"role": "system", "content": "You are a helpful assistant."},
+                        {"role": "user", "content": prompt},
+                    ],
+                    max_tokens=200,  # Puoi aumentare il numero di token se necessario
+                    temperature=0.5
+                )
 
         return jsonify({"response": response.choices[0].text.strip()})
 
