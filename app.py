@@ -7,7 +7,6 @@ app = Flask(__name__)
 # Aggiungi la tua chiave API di OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")  # Assicurati che la variabile d'ambiente sia correttamente configurata
 
-
 # Verifica se la chiave è correttamente impostata
 if openai.api_key is None:
     print("La chiave API non è stata trovata!")
@@ -24,18 +23,18 @@ def chat():
         if not user_message:
             return jsonify({"error": "Il messaggio non può essere vuoto"}), 400
 
-        # Invia la richiesta a OpenAI utilizzando il nuovo formato
-        response = openai.chat.Completion.create(
-                    model="gpt-3.5-turbo", 
-                    messages=[
-                        {"role": "system", "content": "Sei un assistente AI."},
-                        {"role": "user", "content": user_message},
-                    ],
-                    max_tokens=500,  # Puoi aumentare il numero di token se necessario
-                    temperature=0.5
-                )
+        # Invia la richiesta a OpenAI utilizzando il nuovo formato corretto
+        response = openai.ChatCompletion.create(  # Modifica qui
+            model="gpt-3.5-turbo",  # Puoi usare anche "gpt-4" se disponibile
+            messages=[
+                {"role": "system", "content": "Sei un assistente AI."},
+                {"role": "user", "content": user_message},
+            ],
+            max_tokens=500,  # Puoi aumentare il numero di token se necessario
+            temperature=0.5
+        )
 
-        return jsonify({"response": response.choices[0].text.strip()})
+        return jsonify({"response": response['choices'][0]['message']['content'].strip()})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
