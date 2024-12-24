@@ -21,10 +21,10 @@ def chat():
         response = openai.chat.Completion.create(
                     model="gpt-3.5-turbo", 
                     messages=[
-                        {"role": "system", "content": "You are a helpful assistant."},
-                        {"role": "user", "content": prompt},
+                        {"role": "system", "content": ""Sei un assistente AI.""},
+                        {"role": "user", "content": user_message},
                     ],
-                    max_tokens=200,  # Puoi aumentare il numero di token se necessario
+                    max_tokens=500,  # Puoi aumentare il numero di token se necessario
                     temperature=0.5
                 )
 
