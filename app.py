@@ -7,6 +7,13 @@ app = Flask(__name__)
 # Aggiungi la tua chiave API di OpenAI
 openai.api_key = os.getenv("OPENAI_API_KEY")  # Assicurati che la variabile d'ambiente sia correttamente configurata
 
+
+# Verifica se la chiave è correttamente impostata
+if openai.api_key is None:
+    print("La chiave API non è stata trovata!")
+else:
+    print("La chiave API è stata trovata.")
+    
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
