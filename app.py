@@ -21,7 +21,7 @@ def chat():
         response = openai.chat.Completion.create(
                     model="gpt-3.5-turbo", 
                     messages=[
-                        {"role": "system", "content": ""Sei un assistente AI.""},
+                        {"role": "system", "content": "Sei un assistente AI.""},
                         {"role": "user", "content": user_message},
                     ],
                     max_tokens=500,  # Puoi aumentare il numero di token se necessario
