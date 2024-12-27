@@ -21,17 +21,15 @@ def chat():
         # Ricevi il messaggio dal corpo della richiesta
         data = request.json
         prompt = data.get('prompt', '')
-        max_tokens = data.get('max_tokens', 200)
-        model = data.get('model', 'gpt-3.5-turbo')
 
         if not prompt:
             return jsonify({"error": "Il messaggio non può essere vuoto"}), 400
 
         # Invia la richiesta a OpenAI utilizzando il nuovo formato corretto
-        response = client.ChatCompletion.create(
-            model=model,
+        response = client.chat.completions.create(
+            model='gpt-3.5-turbo',
             messages=[{"role": "user", "content": prompt}],
-            max_tokens=max_tokens,
+            max_tokens=250,
             temperature=0.6
         )
 
