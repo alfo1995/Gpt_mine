@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 api_key = os.getenv("OPENAI_API_KEY")
 organization = os.getenv("ORGANIZATION_ID")
-organization = os.getenv("PROJECT_ID")
+project = os.getenv("PROJECT_ID")
 
 # Verifica se la chiave è correttamente impostata
 try:
