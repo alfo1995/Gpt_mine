@@ -3,15 +3,34 @@ from flask_cors import CORS
 from openai import OpenAI
 import json
 import os
+from pymongo import MongoClient
+
 
 app = Flask(__name__)
 # Allow requests from your frontend domain
 CORS(app, origins=["https://my-project-sable-nine.vercel.app"])
 
-
+conn_string = os.environ.get('DATABASE_URL')
+db_name = os.environ.get('DATABASE_NAME')
 api_key = os.getenv("OPENAI_API_KEY")
 organization = os.getenv("ORGANIZATION_ID")
 project = os.getenv("PROJECT_ID")
+
+client = MongoClient(conn_string)
+db = client.get_database(db_name)
+users_collection = db.family
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    
+    user = users_collection.find_one({'username': username, 'password': password})
+    if user:
+        return jsonify({'message': 'Login successful'}), 200
+    else:
+        return jsonify({'message': 'Invalid credentials'}), 401
 
 # Verifica se la chiave è correttamente impostata
 try:
