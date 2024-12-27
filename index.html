@@ -94,6 +94,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
     const messagesContainer = document.getElementById('messages');
+    const backendUrl = process.env.YOUR_BACKEND_URL;
 
     function addMessage(content, sender = 'bot') {
       const message = document.createElement('div');
@@ -120,7 +121,7 @@
       messagesContainer.appendChild(loadingMessage);
 
       try {
-        const response = await fetch('https://my-project-1c4e.onrender.com/api/chat', {
+        const response = await fetch(`${backendUrl}/api/chat`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ prompt })
