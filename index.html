@@ -94,8 +94,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
   <script>
     const messagesContainer = document.getElementById('messages');
-    const backendUrl = process.env.YOUR_BACKEND_URL;
-
+    
     function addMessage(content, sender = 'bot') {
       const message = document.createElement('div');
       message.className = `message ${sender}`;
@@ -119,6 +118,8 @@
       loadingMessage.className = 'message bot';
       loadingMessage.textContent = 'Generating response...';
       messagesContainer.appendChild(loadingMessage);
+      const backendUrl = process.env.YOUR_BACKEND_URL || 'https://default-backend-url.com';
+      console.log('Backend URL:', backendUrl); // Assicurati che mostri l'URL corretto
 
       try {
         const response = await fetch(`${backendUrl}/api/chat`, {
