@@ -118,7 +118,7 @@
       loadingMessage.className = 'message bot';
       loadingMessage.textContent = 'Generating response...';
       messagesContainer.appendChild(loadingMessage);
-      const backendUrl = process.env.YOUR_BACKEND_URL || 'https://default-backend-url.com';
+      const backendUrl = import.meta.env.YOUR_BACKEND_URL ;
       console.log('Backend URL:', backendUrl); // Assicurati che mostri l'URL corretto
 
       try {
