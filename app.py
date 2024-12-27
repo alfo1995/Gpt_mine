@@ -1,40 +1,44 @@
 from flask import Flask, request, jsonify
-import openai
+from openai import OpenAI
+import json
 import os
 
 app = Flask(__name__)
 
-# Aggiungi la tua chiave API di OpenAI
-openai.api_key = os.getenv("OPENAI_API_KEY")  # Assicurati che la variabile d'ambiente sia correttamente configurata
+api_key = os.getenv("OPENAI_API_KEY")
+organization = os.getenv("ORGANIZATION_ID")
+organization = os.getenv("PROJECT_ID")
 
 # Verifica se la chiave è correttamente impostata
-if openai.api_key is None:
-    print("La chiave API non è stata trovata!")
-else:
-    print("La chiave API è stata trovata.")
+try:
+    client = OpenAI(api_key=api_key, organization=organization, project=project)
+except KeyError:
+    print("The env variables were not found.")
     
 @app.route('/api/chat', methods=['POST'])
 def chat():
     try:
         # Ricevi il messaggio dal corpo della richiesta
         data = request.json
-        user_message = data.get("message", "")
+        prompt = data.get('prompt', '')
+        max_tokens = data.get('max_tokens', 200)
+        model = data.get('model', 'gpt-3.5-turbo')
 
-        if not user_message:
+        if not prompt:
             return jsonify({"error": "Il messaggio non può essere vuoto"}), 400
 
         # Invia la richiesta a OpenAI utilizzando il nuovo formato corretto
-        response = openai.ChatCompletion.create(  # Modifica qui
-            model="gpt-3.5-turbo",  # Puoi usare anche "gpt-4" se disponibile
-            messages=[
-                {"role": "system", "content": "Sei un assistente AI."},
-                {"role": "user", "content": user_message},
-            ],
-            max_tokens=500,  # Puoi aumentare il numero di token se necessario
-            temperature=0.5
+        response = client.ChatCompletion.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            max_tokens=max_tokens,
+            temperature=0.6
         )
 
-        return jsonify({"response": response['choices'][0]['message']['content'].strip()})
+        # Estrarre il contenuto generato
+        generated_text = response['choices'][0]['message']['content']
+
+        return jsonify({"success": True, "response": generated_text})
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
