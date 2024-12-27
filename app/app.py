@@ -1,9 +1,13 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from openai import OpenAI
 import json
 import os
 
 app = Flask(__name__)
+# Allow requests from your frontend domain
+CORS(app, origins=["https://my-project-5kd2qw4pg-alfo1995s-projects.vercel.app"])
+
 
 api_key = os.getenv("OPENAI_API_KEY")
 organization = os.getenv("ORGANIZATION_ID")
