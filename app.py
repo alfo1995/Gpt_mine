@@ -34,7 +34,7 @@ def chat():
         )
 
         # Estrarre il contenuto generato
-        generated_text = response['choices'][0]['message']['content']
+        generated_text = response.choices[0].message.content
 
         return jsonify({"success": True, "response": generated_text})
 
