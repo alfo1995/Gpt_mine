@@ -264,7 +264,7 @@
           }
 
           const data = await response.json();
-          if (data.success) {
+          if (data.message === 'Login successful') {
             loginContainer.style.display = 'none';
             chatContainer.style.display = 'flex';
           } else {
